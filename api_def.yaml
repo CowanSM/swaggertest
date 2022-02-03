@@ -1,0 +1,731 @@
+openapi: 3.0.0
+servers:
+  - description: Localhost test server
+    url: http://localhost:{port}/{basePath}
+    variables:
+      port:
+        enum:
+          - '3000'
+        default: '3000'
+      basePath:
+        enum:
+          - 'v1'
+        default: 'v1'
+info:
+  version: "1.0.0"
+  title: Test API Specification
+  description: >-
+    This is a test api for our upcoming project.
+  contact:
+    name: Sean
+    url: http://howsmydriving.com/
+    email: nobodyshome@random.games
+  license:
+    name: This is ours
+    url: http://mylicense.com/
+components:
+  schemas:
+    user:
+      title: User
+      type: object
+      required: [uuid]
+      properties:
+        uuid:
+          readOnly: true
+          type: string
+        avatars:
+          readOnly: true
+          type: array
+          items:
+            $ref: '#/components/schemas/avatar'
+        portals:
+          readOnly: true
+          type: array
+          items:
+            $ref: '#/components/schemas/portal'
+        ugt:
+          readOnly: true
+          type: array
+          items:
+            $ref: '#/components/schemas/ugt'
+    avatar:
+      title: Avatar
+      type: object
+      required: [uid]
+      properties:
+        uid:
+          readOnly: true
+          type: string
+        model:
+          readOnly: true
+          type: string
+        skin:
+          readOnly: true
+          type: string
+        elements:
+          readOnly: true
+          $ref: '#/components/schemas/avatarElements'
+    portal:
+      title: Portal
+      type: object
+      required: [uid]
+      properties:
+        uid:
+          readOnly: true
+          type: string
+        model:
+          readOnly: true
+          type: string
+        skin:
+          readOnly: true
+          type: string
+        elements:
+          readOnly: true
+          $ref: '#/components/schemas/portalElements'
+    ugt:
+      title: UGT
+      type: object
+      required: [uid, name]
+      properties:
+        uid:
+          readOnly: true
+          type: string
+        name:
+          readOnly: true
+          type: string
+        owner:
+          readOnly: true
+          type: string
+    avatarElements:
+      title: Avatar Elements
+      type: array
+      items:
+        $ref: '#/components/schemas/elementValue'
+    portalElements:
+      title: Portal Elements
+      type: array
+      items:
+        $ref: '#/components/schemas/elementValue'
+    elementValue:
+      title: Element Value
+      type: object
+      required: [name, type, value]
+      properties:
+        name:
+          readOnly: true
+          type: string
+        type:
+          readOnly: true
+          enum:
+            - 'setEnabled'
+            - 'color'
+          default: 'setEnabled'
+        value:
+          readOnly: true
+          oneOf:
+            - type: boolean
+            - type: string
+            - type: integer
+            - type: number
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          readOnly: true
+          type: integer
+          format: int32
+        type:
+          readOnly: true
+          type: string
+        message:
+          readOnly: true
+          type: string
+    SessionInfo:
+      type: object
+      properties:
+        sessionKey:
+          type: string
+  securitySchemes:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: http://localhost:3000/openid/discover
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://localhost:3000/api/oauth2/dialog
+          scopes:
+            read: read user information
+            write: write session data
+security:
+  - OpenID:
+    - read
+    - write
+  - OAuth2:
+    - read
+    - write
+tags:
+  - name: api
+externalDocs:
+  description: Disclaimer Site
+  url: https://app.archbee.io/public/GkJ1Tio_VxSsGylgYM1z0
+paths:
+  /:
+    get:
+      summary: Server example operation
+      security:
+        - OAuth2:
+          - read
+          - write
+      description: >-
+        This is an example operation to show how security is applied to the
+        call.
+      tags:
+        - dev
+      parameters:
+        - name: testq
+          in: query
+          required: true
+          description: Test query parameter
+          schema:
+            type: string
+            format: utf8
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /ping:
+    get:
+      summary: Server heartbeat operation
+      security: []
+      description: >-
+        This operation shows how to override the global security defined above,
+        as we want to open it up for all users.
+      tags:
+        - dev
+      responses:
+        '200':
+          description: OK
+  /user/{uuid}:
+    get:
+      summary: Retrieve user info
+      security:
+        - OAuth2:
+          - read
+      description: Retrieve explicit information for user
+      tags:
+        - user
+      parameters:
+        - name: uuid
+          in: path
+          description: Unique User Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+  /user/{uuid}/ugt:
+    get:
+      summary: Retrieve ugts for user
+      security:
+        - OAuth2:
+          - read
+      description: Retrieve a list of ugts for the described user
+      tags:
+        - user
+        - ugt
+      parameters:
+        - name: uuid
+          in: path
+          description: Unique User Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+        '400':
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /user/{uuid}/avatars:
+    get:
+      summary: Retrieve avatars for user
+      security:
+        - OAuth2:
+          - read
+      description: Retrieve all avatar info for the given user
+      tags:
+        - user
+        - avatar
+      parameters:
+        - name: uuid
+          in: path
+          description: Unique User Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/avatar'
+        '400':
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /user/{uuid}/portals:
+    get:
+      summary: Retrieve portals for user
+      security:
+        - OAuth2:
+          - read
+      description: Retrieve all portal info for the given user
+      tags:
+        - user
+        - portal
+      parameters:
+        - name: uuid
+          in: path
+          description: Unique User Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/portal'
+        '400':
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /avatar/{uid}:
+    get:
+      summary: Retrieve avatar information
+      security:
+        - OAuth2:
+          - read
+      description: Retrieve avatar info for given id
+      tags:
+        - avatar
+      parameters:
+        - name: uid
+          in: path
+          description: Avatar Unique Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/avatar'
+        '400':
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /portal/{uid}:
+    get:
+      summary: Retrieve portal information
+      security:
+        - OAuth2:
+          - read
+      description: Retrieve portal info for given id
+      tags:
+        - portal
+      parameters:
+        - name: uid
+          in: path
+          description: Portal Unique Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/portal'
+        '400':
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /developers/{developerKey}/{appKey}/sessions/{uuid}:
+    post:
+      summary: Start a Session
+      security:
+        - OAuth2:
+          - write
+      description: Start a Session for the user
+      tags:
+        - developer
+        - session
+        - user
+      parameters:
+        - name: uuid
+          in: path
+          description: User Unique Id
+          required: true
+          schema:
+            type: string
+        - name: developerKey
+          in: path
+          description: Developer Api Key
+          required: true
+          schema:
+            type: string
+        - name: appKey
+          in: path
+          description: App Api Key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Create
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  response:
+                    $ref: '#/components/schemas/ApiResponse'
+                  session:
+                    $ref: '#/components/schemas/SessionInfo'
+        '400':
+          description: Failed Create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    put:
+      summary: Keep-Alive a Session
+      security:
+        - OAuth2:
+          - write
+      description: Keep an active session for an user alive
+      tags:
+        - developer
+        - session
+        - user
+      parameters:
+        - name: uuid
+          in: path
+          description: User Unique Id
+          required: true
+          schema:
+            type: string
+        - name: developerKey
+          in: path
+          description: Developer Api Key
+          required: true
+          schema:
+            type: string
+        - name: appKey
+          in: path
+          description: App Api Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Has relevant session info for update.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionInfo'
+      responses:
+        '200':
+          description: Successful Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Failed Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    patch:
+      summary: Pause Or Resume Session
+      security:
+        - OAuth2:
+          - write
+      description: Pause or Resume a session without ending the session
+      tags:
+        - developer
+        - session
+        - user
+      parameters:
+        - name: uuid
+          in: path
+          description: User Unique Id
+          required: true
+          schema:
+            type: string
+        - name: developerKey
+          in: path
+          description: Developer Api Key
+          required: true
+          schema:
+            type: string
+        - name: appKey
+          in: path
+          description: App Api Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Has relevant session info for update.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sessionInfo:
+                  $ref: '#/components/schemas/SessionInfo'
+                setPause:
+                  type: boolean
+      responses:
+        '200':
+          description: Successful Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Failed Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    delete:
+      summary: End a Session
+      security:
+        - OAuth2:
+          - write
+      description: End an active session for an user.
+      tags:
+        - developer
+        - session
+        - user
+      parameters:
+        - name: uuid
+          in: path
+          description: User Unique Id
+          required: true
+          schema:
+            type: string
+        - name: developerKey
+          in: path
+          description: Developer Api Key
+          required: true
+          schema:
+            type: string
+        - name: sessionKey
+          in: query
+          description: Session Key from POST
+          required: true
+          schema:
+            type: string
+        - name: appKey
+          in: path
+          description: App Api Key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Failed Delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /developers/{developerKey}/{appKey}/{uuid}/ugt:
+    get:
+      summary: Fetch UGT for user.
+      security:
+        - OAuth2:
+          - read
+      description: >-
+        Get the UGT set by user for the given developer-app key pair.
+      tags:
+        - developer
+        - ugt
+      parameters:
+        - name: uuid
+          in: path
+          description: User Unique Id
+          required: true
+          schema:
+            type: string
+        - name: developerKey
+          in: path
+          description: Developer Api Key
+          required: true
+          schema:
+            type: string
+        - name: appKey
+          in: path
+          description: App Api Key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  apiResponse:
+                    $ref: '#/components/schemas/ApiResponse'
+                  ugt:
+                    $ref: '#/components/schemas/ugt'
+        '400':
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    post:
+      summary: Set UGT for user.
+      security:
+        - OAuth2:
+          - write
+      description: >-
+        Set the UGT for given user and the developer-app key pair.
+      tags:
+        - developer
+        - ugt
+      parameters:
+        - name: uuid
+          in: path
+          description: User Unique Id
+          required: true
+          schema:
+            type: string
+        - name: developerKey
+          in: path
+          description: Developer Api Key
+          required: true
+          schema:
+            type: string
+        - name: appKey
+          in: path
+          description: App Api Key
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Contains the (valid) ugt to set for the given user/app pair.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ugt:
+                  $ref: '#/components/schemas/ugt'
+      responses:
+        '200':
+          description: Successful set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Failed set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /developers/{developerKey}/{appKey}/ugt:
+    get:
+      summary: Retrieve ugts for given user ids.
+      security:
+        - OAuth2:
+          - read
+      description: Retrieve all UGTs for a set of supplied user ids.
+      tags:
+        - developer
+        - ugt
+      parameters:
+        - name: developerKey
+          in: path
+          description: Developer Api Key
+          required: true
+          schema:
+            type: string
+        - name: appKey
+          in: path
+          description: App Api Key
+          required: true
+          schema:
+            type: string
+        - name: uuids
+          in: query
+          description: Uuid List
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/portal'
+        '400':
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
