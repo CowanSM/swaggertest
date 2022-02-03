@@ -14,7 +14,8 @@ servers:
       avar:
         enum:
           - '0'
-        default: '0'
+          - '1'
+        default: '1'
 info:
   version: "1.0.0"
   title: Test API Specification v1.0.0
