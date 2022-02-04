@@ -15,6 +15,7 @@ servers:
         enum:
           - '0'
           - '1'
+          - '2'
         default: '1'
 info:
   version: "1.0.0"
