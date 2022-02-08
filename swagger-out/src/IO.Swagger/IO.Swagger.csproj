@@ -12,7 +12,7 @@ Contact: nobodyshome@random.games
     
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0EB04463-6D45-4995-8B52-A6490255A1CE}</ProjectGuid>
+    <ProjectGuid>{0D1D38F3-7B3A-4921-B040-C5A6DFE60407}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IO.Swagger</RootNamespace>
