@@ -1,0 +1,906 @@
+openapi: 3.0.0
+info:
+  title: Test API Specification
+  description: This is a test api for our upcoming project.
+  contact:
+    name: Sean
+    url: http://howsmydriving.com/
+    email: nobodyshome@random.games
+  license:
+    name: This is ours
+    url: http://mylicense.com/
+  version: 1.0.0
+externalDocs:
+  description: Disclaimer Site
+  url: https://app.archbee.io/public/GkJ1Tio_VxSsGylgYM1z0
+servers:
+- url: "http://localhost:{port}/{basePath}"
+  description: Localhost test server
+  variables:
+    port:
+      default: "3000"
+      enum:
+      - "3000"
+    basePath:
+      default: v1
+      enum:
+      - v1
+security:
+- OpenID:
+  - read
+  - write
+- OAuth2:
+  - read
+  - write
+tags:
+- name: api
+paths:
+  /:
+    get:
+      tags:
+      - dev
+      summary: Server example operation
+      description: This is an example operation to show how security is applied to
+        the call.
+      operationId: rootGET
+      parameters:
+      - name: testq
+        in: query
+        description: Test query parameter
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: utf8
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: Dev
+  /ping:
+    get:
+      tags:
+      - dev
+      summary: Server heartbeat operation
+      description: "This operation shows how to override the global security defined\
+        \ above, as we want to open it up for all users."
+      operationId: pingGET
+      responses:
+        "200":
+          description: OK
+      security: []
+      x-swagger-router-controller: Dev
+  /user/{uuid}:
+    get:
+      tags:
+      - user
+      summary: Retrieve user info
+      description: Retrieve explicit information for user
+      operationId: userUuidGET
+      parameters:
+      - name: uuid
+        in: path
+        description: Unique User Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: User
+  /user/{uuid}/ugt:
+    get:
+      tags:
+      - user
+      - ugt
+      summary: Retrieve ugts for user
+      description: Retrieve a list of ugts for the described user
+      operationId: userUuidUgtGET
+      parameters:
+      - name: uuid
+        in: path
+        description: Unique User Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+                x-content-type: application/json
+        "400":
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: User
+  /user/{uuid}/avatars:
+    get:
+      tags:
+      - user
+      - avatar
+      summary: Retrieve avatars for user
+      description: Retrieve all avatar info for the given user
+      operationId: userUuidAvatarsGET
+      parameters:
+      - name: uuid
+        in: path
+        description: Unique User Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/avatar'
+                x-content-type: application/json
+        "400":
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: User
+  /user/{uuid}/portals:
+    get:
+      tags:
+      - user
+      - portal
+      summary: Retrieve portals for user
+      description: Retrieve all portal info for the given user
+      operationId: userUuidPortalsGET
+      parameters:
+      - name: uuid
+        in: path
+        description: Unique User Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/portal'
+                x-content-type: application/json
+        "400":
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: User
+  /avatar/{uid}:
+    get:
+      tags:
+      - avatar
+      summary: Retrieve avatar information
+      description: Retrieve avatar info for given id
+      operationId: avatarUidGET
+      parameters:
+      - name: uid
+        in: path
+        description: Avatar Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/avatar'
+        "400":
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: Avatar
+  /portal/{uid}:
+    get:
+      tags:
+      - portal
+      summary: Retrieve portal information
+      description: Retrieve portal info for given id
+      operationId: portalUidGET
+      parameters:
+      - name: uid
+        in: path
+        description: Portal Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/portal'
+        "400":
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: Portal
+  /developers/{developerKey}/{appKey}/sessions/{uuid}:
+    put:
+      tags:
+      - developer
+      - session
+      - user
+      summary: Keep-Alive a Session
+      description: Keep an active session for an user alive
+      operationId: developersDeveloperKeyAppKeySessionsUuidPUT
+      parameters:
+      - name: uuid
+        in: path
+        description: User Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: developerKey
+        in: path
+        description: Developer Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: appKey
+        in: path
+        description: App Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Has relevant session info for update.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionInfo'
+        required: true
+      responses:
+        "200":
+          description: Successful Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "400":
+          description: Failed Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - write
+      x-swagger-router-controller: Developer
+    post:
+      tags:
+      - developer
+      - session
+      - user
+      summary: Start a Session
+      description: Start a Session for the user
+      operationId: developersDeveloperKeyAppKeySessionsUuidPOST
+      parameters:
+      - name: uuid
+        in: path
+        description: User Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: developerKey
+        in: path
+        description: Developer Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: appKey
+        in: path
+        description: App Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful Create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: Failed Create
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - write
+      x-swagger-router-controller: Developer
+    delete:
+      tags:
+      - developer
+      - session
+      - user
+      summary: End a Session
+      description: End an active session for an user.
+      operationId: developersDeveloperKeyAppKeySessionsUuidDELETE
+      parameters:
+      - name: uuid
+        in: path
+        description: User Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: developerKey
+        in: path
+        description: Developer Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: sessionKey
+        in: query
+        description: Session Key from POST
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: appKey
+        in: path
+        description: App Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful Delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "400":
+          description: Failed Delete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - write
+      x-swagger-router-controller: Developer
+    patch:
+      tags:
+      - developer
+      - session
+      - user
+      summary: Pause Or Resume Session
+      description: Pause or Resume a session without ending the session
+      operationId: developersDeveloperKeyAppKeySessionsUuidPATCH
+      parameters:
+      - name: uuid
+        in: path
+        description: User Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: developerKey
+        in: path
+        description: Developer Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: appKey
+        in: path
+        description: App Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Has relevant session info for update.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/sessions_uuid_body'
+        required: true
+      responses:
+        "200":
+          description: Successful Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "400":
+          description: Failed Update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - write
+      x-swagger-router-controller: Developer
+  /developers/{developerKey}/{appKey}/{uuid}/ugt:
+    get:
+      tags:
+      - developer
+      - ugt
+      summary: Fetch UGT for user.
+      description: Get the UGT set by user for the given developer-app key pair.
+      operationId: developersDeveloperKeyAppKeyUuidUgtGET
+      parameters:
+      - name: uuid
+        in: path
+        description: User Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: developerKey
+        in: path
+        description: Developer Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: appKey
+        in: path
+        description: App Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "400":
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: Developer
+    post:
+      tags:
+      - developer
+      - ugt
+      summary: Set UGT for user.
+      description: Set the UGT for given user and the developer-app key pair.
+      operationId: developersDeveloperKeyAppKeyUuidUgtPOST
+      parameters:
+      - name: uuid
+        in: path
+        description: User Unique Id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: developerKey
+        in: path
+        description: Developer Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: appKey
+        in: path
+        description: App Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: Contains the (valid) ugt to set for the given user/app pair.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/uuid_ugt_body'
+        required: true
+      responses:
+        "200":
+          description: Successful set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        "400":
+          description: Failed set
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - write
+      x-swagger-router-controller: Developer
+  /developers/{developerKey}/{appKey}/ugt:
+    get:
+      tags:
+      - developer
+      - ugt
+      summary: Retrieve ugts for given user ids.
+      description: Retrieve all UGTs for a set of supplied user ids.
+      operationId: developersDeveloperKeyAppKeyUgtGET
+      parameters:
+      - name: developerKey
+        in: path
+        description: Developer Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: appKey
+        in: path
+        description: App Api Key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: uuids
+        in: query
+        description: Uuid List
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: Successful fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/portal'
+        "400":
+          description: Failed fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+      - OAuth2:
+        - read
+      x-swagger-router-controller: Developer
+components:
+  schemas:
+    user:
+      required:
+      - uuid
+      type: object
+      properties:
+        uuid:
+          type: string
+        avatars:
+          type: array
+          items:
+            $ref: '#/components/schemas/avatar'
+        portals:
+          type: array
+          items:
+            $ref: '#/components/schemas/portal'
+        ugt:
+          type: array
+          items:
+            $ref: '#/components/schemas/ugt'
+      example:
+        ugt:
+        - owner: owner
+          uid: uid
+          name: name
+        - owner: owner
+          uid: uid
+          name: name
+        portals:
+        - pieces:
+          - value: ""
+            element: element
+          - value: ""
+            element: element
+          uid: uid
+          skin: skin
+          model: model
+        - pieces:
+          - value: ""
+            element: element
+          - value: ""
+            element: element
+          uid: uid
+          skin: skin
+          model: model
+        uuid: uuid
+        avatars:
+        - pieces:
+          - value: ""
+            element: element
+          - value: ""
+            element: element
+          uid: uid
+          skin: skin
+          model: model
+        - pieces:
+          - value: ""
+            element: element
+          - value: ""
+            element: element
+          uid: uid
+          skin: skin
+          model: model
+    avatar:
+      required:
+      - uid
+      type: object
+      properties:
+        uid:
+          type: string
+        model:
+          type: string
+        skin:
+          type: string
+        pieces:
+          type: array
+          items:
+            $ref: '#/components/schemas/avatarToggles'
+      example:
+        pieces:
+        - value: ""
+          element: element
+        - value: ""
+          element: element
+        uid: uid
+        skin: skin
+        model: model
+    portal:
+      required:
+      - uid
+      type: object
+      properties:
+        uid:
+          type: string
+        model:
+          type: string
+        skin:
+          type: string
+        pieces:
+          type: array
+          items:
+            $ref: '#/components/schemas/portalToggles'
+      example:
+        pieces:
+        - value: ""
+          element: element
+        - value: ""
+          element: element
+        uid: uid
+        skin: skin
+        model: model
+    ugt:
+      required:
+      - name
+      - uid
+      type: object
+      properties:
+        uid:
+          type: string
+        name:
+          type: string
+        owner:
+          type: string
+      example:
+        owner: owner
+        uid: uid
+        name: name
+    avatarToggles:
+      required:
+      - element
+      - value
+      type: object
+      properties:
+        element:
+          type: string
+        value:
+          oneOf:
+          - $ref: '#/components/schemas/avatarTogglesBool'
+          - $ref: '#/components/schemas/avatarTogglesColor'
+      example:
+        value: ""
+        element: element
+    portalToggles:
+      required:
+      - element
+      - value
+      type: object
+      properties:
+        element:
+          type: string
+        value:
+          oneOf:
+          - $ref: '#/components/schemas/portalTogglesBool'
+          - $ref: '#/components/schemas/portalTogglesColor'
+      example:
+        value: ""
+        element: element
+    avatarTogglesBool:
+      type: boolean
+    avatarTogglesColor:
+      type: string
+    portalTogglesBool:
+      type: boolean
+    portalTogglesColor:
+      type: string
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      example:
+        code: 0
+        type: type
+        message: message
+    SessionInfo:
+      type: object
+      properties:
+        sessionKey:
+          type: string
+      example:
+        sessionKey: sessionKey
+    inline_response_200:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/ApiResponse'
+        session:
+          $ref: '#/components/schemas/SessionInfo'
+      example:
+        response:
+          code: 0
+          type: type
+          message: message
+        session:
+          sessionKey: sessionKey
+    sessions_uuid_body:
+      type: object
+      properties:
+        sessionInfo:
+          $ref: '#/components/schemas/SessionInfo'
+        setPause:
+          type: boolean
+    inline_response_200_1:
+      type: object
+      properties:
+        apiResponse:
+          $ref: '#/components/schemas/ApiResponse'
+        ugt:
+          $ref: '#/components/schemas/ugt'
+      example:
+        ugt:
+          owner: owner
+          uid: uid
+          name: name
+        apiResponse:
+          code: 0
+          type: type
+          message: message
+    uuid_ugt_body:
+      type: object
+      properties:
+        ugt:
+          $ref: '#/components/schemas/ugt'
+  securitySchemes:
+    OpenID:
+      type: openIdConnect
+      openIdConnectUrl: http://localhost:3000/openid/discover
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://localhost:3000/api/oauth2/dialog
+          scopes:
+            read: read user information
+            write: write session data
