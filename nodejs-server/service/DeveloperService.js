@@ -74,7 +74,8 @@ exports.developersDeveloperKeyAppKeySessionsUuidPOST = function(uuid,developerKe
     "message" : "message"
   },
   "session" : {
-    "sessionKey" : "sessionKey"
+    "sessionKey" : "sessionKey",
+    "ttl" : 0
   }
 };
     if (Object.keys(examples).length > 0) {
@@ -126,14 +127,8 @@ exports.developersDeveloperKeyAppKeyUgtGET = function(developerKey,appKey,uuids)
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ null, null ],
   "skin" : "skin",
   "model" : "model"
 };

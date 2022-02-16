@@ -74,7 +74,8 @@ exports.developersDeveloperKeyAppKeySessionsUuidPOST = function(uuid,developerKe
     "message" : "message"
   },
   "session" : {
-    "sessionKey" : "sessionKey"
+    "sessionKey" : "sessionKey",
+    "ttl" : 0
   }
 };
     if (Object.keys(examples).length > 0) {

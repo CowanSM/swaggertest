@@ -14,14 +14,8 @@ exports.developersDeveloperKeyAppKeyUgtGET = function(developerKey,appKey,uuids)
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ null, null ],
   "skin" : "skin",
   "model" : "model"
 };
@@ -115,49 +109,41 @@ exports.userUuidUgtGET = function(uuid) {
     "name" : "name"
   } ],
   "portals" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   } ],
   "uuid" : "uuid",
   "avatars" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   } ]
@@ -172,49 +158,41 @@ exports.userUuidUgtGET = function(uuid) {
     "name" : "name"
   } ],
   "portals" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   } ],
   "uuid" : "uuid",
   "avatars" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   } ]

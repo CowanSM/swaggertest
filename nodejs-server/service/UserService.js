@@ -74,7 +74,8 @@ exports.developersDeveloperKeyAppKeySessionsUuidPOST = function(uuid,developerKe
     "message" : "message"
   },
   "session" : {
-    "sessionKey" : "sessionKey"
+    "sessionKey" : "sessionKey",
+    "ttl" : 0
   }
 };
     if (Object.keys(examples).length > 0) {
@@ -124,25 +125,29 @@ exports.userUuidAvatarsGET = function(uuid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  }, {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  } ],
   "skin" : "skin",
   "model" : "model"
 }, {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  }, {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  } ],
   "skin" : "skin",
   "model" : "model"
 } ];
@@ -176,49 +181,41 @@ exports.userUuidGET = function(uuid) {
     "name" : "name"
   } ],
   "portals" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   } ],
   "uuid" : "uuid",
   "avatars" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   } ]
@@ -243,25 +240,13 @@ exports.userUuidPortalsGET = function(uuid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ null, null ],
   "skin" : "skin",
   "model" : "model"
 }, {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ null, null ],
   "skin" : "skin",
   "model" : "model"
 } ];
@@ -295,49 +280,41 @@ exports.userUuidUgtGET = function(uuid) {
     "name" : "name"
   } ],
   "portals" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   } ],
   "uuid" : "uuid",
   "avatars" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   } ]
@@ -352,49 +329,41 @@ exports.userUuidUgtGET = function(uuid) {
     "name" : "name"
   } ],
   "portals" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ null, null ],
     "skin" : "skin",
     "model" : "model"
   } ],
   "uuid" : "uuid",
   "avatars" : [ {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   }, {
-    "pieces" : [ {
-      "value" : "",
-      "element" : "element"
-    }, {
-      "value" : "",
-      "element" : "element"
-    } ],
     "uid" : "uid",
+    "elements" : [ {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    }, {
+      "name" : "name",
+      "type" : "",
+      "value" : ""
+    } ],
     "skin" : "skin",
     "model" : "model"
   } ]

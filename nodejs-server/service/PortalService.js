@@ -12,14 +12,8 @@ exports.portalUidGET = function(uid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ null, null ],
   "skin" : "skin",
   "model" : "model"
 };
@@ -43,25 +37,13 @@ exports.userUuidPortalsGET = function(uuid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ null, null ],
   "skin" : "skin",
   "model" : "model"
 }, {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ null, null ],
   "skin" : "skin",
   "model" : "model"
 } ];

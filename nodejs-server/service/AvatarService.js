@@ -12,14 +12,16 @@ exports.avatarUidGET = function(uid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  }, {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  } ],
   "skin" : "skin",
   "model" : "model"
 };
@@ -43,25 +45,29 @@ exports.userUuidAvatarsGET = function(uuid) {
   return new Promise(function(resolve, reject) {
     var examples = {};
     examples['application/json'] = [ {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  }, {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  } ],
   "skin" : "skin",
   "model" : "model"
 }, {
-  "pieces" : [ {
-    "value" : "",
-    "element" : "element"
-  }, {
-    "value" : "",
-    "element" : "element"
-  } ],
   "uid" : "uid",
+  "elements" : [ {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  }, {
+    "name" : "name",
+    "type" : "",
+    "value" : ""
+  } ],
   "skin" : "skin",
   "model" : "model"
 } ];

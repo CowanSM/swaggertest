@@ -14,6 +14,10 @@ externalDocs:
   description: Disclaimer Site
   url: https://app.archbee.io/public/GkJ1Tio_VxSsGylgYM1z0
 servers:
+- url: https://virtserver.swaggerhub.com/sean15/TestOA3App/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: "http://ec2-34-220-123-206.us-west-2.compute.amazonaws.com:{port}"
+  description: Ec2 host
 - url: "http://localhost:{port}/{basePath}"
   description: Localhost test server
   variables:
@@ -21,6 +25,7 @@ servers:
       default: "3000"
       enum:
       - "3000"
+      - "3001"
     basePath:
       default: v1
       enum:
@@ -666,22 +671,27 @@ paths:
 components:
   schemas:
     user:
+      title: User
       required:
       - uuid
       type: object
       properties:
         uuid:
           type: string
+          readOnly: true
         avatars:
           type: array
+          readOnly: true
           items:
             $ref: '#/components/schemas/avatar'
         portals:
           type: array
+          readOnly: true
           items:
             $ref: '#/components/schemas/portal'
         ugt:
           type: array
+          readOnly: true
           items:
             $ref: '#/components/schemas/ugt'
       example:
@@ -693,89 +703,94 @@ components:
           uid: uid
           name: name
         portals:
-        - pieces:
-          - value: ""
-            element: element
-          - value: ""
-            element: element
-          uid: uid
+        - uid: uid
+          elements:
+          - null
+          - null
           skin: skin
           model: model
-        - pieces:
-          - value: ""
-            element: element
-          - value: ""
-            element: element
-          uid: uid
+        - uid: uid
+          elements:
+          - null
+          - null
           skin: skin
           model: model
         uuid: uuid
         avatars:
-        - pieces:
-          - value: ""
-            element: element
-          - value: ""
-            element: element
-          uid: uid
+        - uid: uid
+          elements:
+          - name: name
+            type: ""
+            value: ""
+          - name: name
+            type: ""
+            value: ""
           skin: skin
           model: model
-        - pieces:
-          - value: ""
-            element: element
-          - value: ""
-            element: element
-          uid: uid
+        - uid: uid
+          elements:
+          - name: name
+            type: ""
+            value: ""
+          - name: name
+            type: ""
+            value: ""
           skin: skin
           model: model
     avatar:
+      title: Avatar
       required:
       - uid
       type: object
       properties:
         uid:
           type: string
+          readOnly: true
         model:
           type: string
+          readOnly: true
         skin:
           type: string
-        pieces:
-          type: array
-          items:
-            $ref: '#/components/schemas/avatarToggles'
+          readOnly: true
+        elements:
+          $ref: '#/components/schemas/avatarElements'
       example:
-        pieces:
-        - value: ""
-          element: element
-        - value: ""
-          element: element
         uid: uid
+        elements:
+        - name: name
+          type: ""
+          value: ""
+        - name: name
+          type: ""
+          value: ""
         skin: skin
         model: model
     portal:
+      title: Portal
       required:
       - uid
       type: object
       properties:
         uid:
           type: string
+          readOnly: true
         model:
           type: string
+          readOnly: true
         skin:
           type: string
-        pieces:
-          type: array
-          items:
-            $ref: '#/components/schemas/portalToggles'
+          readOnly: true
+        elements:
+          $ref: '#/components/schemas/portalElements'
       example:
-        pieces:
-        - value: ""
-          element: element
-        - value: ""
-          element: element
         uid: uid
+        elements:
+        - null
+        - null
         skin: skin
         model: model
     ugt:
+      title: UGT
       required:
       - name
       - uid
@@ -783,62 +798,69 @@ components:
       properties:
         uid:
           type: string
+          readOnly: true
         name:
           type: string
+          readOnly: true
         owner:
           type: string
+          readOnly: true
       example:
         owner: owner
         uid: uid
         name: name
-    avatarToggles:
+    avatarElements:
+      title: Avatar Elements
+      type: array
+      items:
+        $ref: '#/components/schemas/elementValue'
+    portalElements:
+      title: Portal Elements
+      type: array
+      items:
+        $ref: '#/components/schemas/elementValue'
+    elementValue:
+      title: Element Value
       required:
-      - element
+      - name
+      - type
       - value
       type: object
       properties:
-        element:
+        name:
           type: string
-        value:
-          oneOf:
-          - $ref: '#/components/schemas/avatarTogglesBool'
-          - $ref: '#/components/schemas/avatarTogglesColor'
-      example:
-        value: ""
-        element: element
-    portalToggles:
-      required:
-      - element
-      - value
-      type: object
-      properties:
-        element:
+          readOnly: true
+        type:
           type: string
+          readOnly: true
+          default: setEnabled
+          enum:
+          - setEnabled
+          - color
         value:
+          readOnly: true
           oneOf:
-          - $ref: '#/components/schemas/portalTogglesBool'
-          - $ref: '#/components/schemas/portalTogglesColor'
+          - type: boolean
+          - type: string
+          - type: integer
+          - type: number
       example:
+        name: name
+        type: ""
         value: ""
-        element: element
-    avatarTogglesBool:
-      type: boolean
-    avatarTogglesColor:
-      type: string
-    portalTogglesBool:
-      type: boolean
-    portalTogglesColor:
-      type: string
     ApiResponse:
       type: object
       properties:
         code:
           type: integer
           format: int32
+          readOnly: true
         type:
           type: string
+          readOnly: true
         message:
           type: string
+          readOnly: true
       example:
         code: 0
         type: type
@@ -848,8 +870,11 @@ components:
       properties:
         sessionKey:
           type: string
+        ttl:
+          type: integer
       example:
         sessionKey: sessionKey
+        ttl: 0
     inline_response_200:
       type: object
       properties:
@@ -864,6 +889,7 @@ components:
           message: message
         session:
           sessionKey: sessionKey
+          ttl: 0
     sessions_uuid_body:
       type: object
       properties:
